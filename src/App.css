@@ -1,155 +1,72 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;600&display=swap');
-
 body {
-    background-image: url('https://s3-us-west-2.amazonaws.com/userdata123/www/imagefields/6189/theme_form_background_image-1655979649-847-74-3796189495.jpg?=1655979651494&=1657296639287');
-    background-color: #eaf5f7;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    display: flex;
-    justify-content: center;
-    padding: 40px 0;
-    font-family: 'Raleway', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('https://images.unsplash.com/photo-1606046604972-77c2c3fa3483?auto=format&fit=crop&w=1470&q=80'); /* replace with your image URL if desired */
+  background-size: cover;
+  background-position: center;
+  font-family: Arial, sans-serif;
 }
 
-form.container {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 40px;
-    width: 90%;
-    max-width: 800px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+.mui-form-container {
+  padding: 40px;
+  margin-top: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-h1, h2 {
-    font-weight: 600;
-    margin-bottom: 10px;
+.form-row-inline {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
 }
 
-p {
-    font-weight: 300;
-    color: #333;
+.form-label {
+  width: 160px;
+  flex-shrink: 0;
+  text-align: left;
+  font-weight: 600;
 }
 
-hr {
-    border: none;
-    height: 2px;
-    background-color: black;
-    margin: 20px 0;
-}
-
-.form-row, .form-row-address, .form-row-medical {
-    display: flex;
-    align-items: flex-start;
-    gap:20px;
-    margin-bottom: 20px;
-}
-
-.form-row label, .form-row-address label, .form-row-medical label {
-    width: 180px;
-    text-align: left;
-    font-weight: 600;
-    color: #333;
-    margin-top: 8px;
-}
-
-input[type="text"], input[type="tel"], input[type="date"], select {
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: rgba(0, 0, 0, 0.15);
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 14px;
-}
-
-.input-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    width: 100%;
-}
-.status,
-.gender
+.form-input,.form-insurance,
+.form-gender,
+.form-phone
 {
-    display: inline-block;
-    flex-wrap: wrap;
-    gap: 10px;
-    width: 100%;
-
+  flex: 1;
+  min-width: 160px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
 }
-input[type="date"].dateofbirth::-webkit-datetime-edit {
-    font-weight: 400; 
-    font-family: 'Raleway', sans-serif;
-    text-transform: uppercase;
+.medical-history-row {
+  display: flex;
+  flex-direction: row; 
 }
 
-
-.input-group input, .input-group select {
-    width: calc(50% - 5px);
+.medical-checkbox-group {
+  display: flex;
+  flex-direction:column;
+  gap: 8px; 
 }
 
-.Street-Address
- {
-    width: 100% !important;
+.mui-submit-button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-top: 20px;
 }
 
-.address {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
+.mui-submit-button:hover {
+  background-color: #333333 !important;
 }
 
-.form-row .input-group label, .form-row-medical .medical label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+h4, h6, .MuiTypography-body1, .MuiTypography-body2 {
+  text-align: left !important;
 }
 
-input[type="radio"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: none;
-    border-radius: 2px; 
-    background-color: rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-    position: relative;
-}
-
-input[type="radio"]:checked {
-    background-color: #333;
-}
-
-input[type="checkbox"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: none;
-    border-radius: 2px;
-    background-color:rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-}
-
-input[type="checkbox"]:checked {
-    background-color: #333;
-}
-
-.Register-Button {
-    text-align: center;
-    margin-top: 30px;
-}
-
-button.button {
-    background-color: black;
-    color: white;
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
+hr
+{
+  margin-bottom: 1px solid;
 }
