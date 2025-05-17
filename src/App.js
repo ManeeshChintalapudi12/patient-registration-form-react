@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Container, Typography, TextField, Button, FormControl, FormLabel,
-  RadioGroup, FormControlLabel, Radio, FormGroup, Checkbox, Select, MenuItem, Box
+  Container, Typography, TextField, Button, FormControlLabel, Radio, RadioGroup,
+  FormGroup, Checkbox, MenuItem, Box, FormLabel
 } from '@mui/material';
 import './App.css';
 
@@ -38,37 +38,95 @@ const submitButtonStyle = {
 };
 
 function App() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [maritalStatus, setMaritalStatus] = useState('');
+  const [insurance, setInsurance] = useState('');
+  const [phone, setPhone] = useState('');
+  const [streetAddress, setStreetAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [country, setCountry] = useState('');
+  const [medicalHistory, setMedicalHistory] = useState([]);
+
+  const handleMedicalHistoryChange = (event) => {
+    const value = event.target.value;
+    setMedicalHistory((prev) =>
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+    );
+  };
+
+  const registerPatient = async (e) => {
+    e.preventDefault();
+
+    const patient = {
+      firstName,
+      lastName,
+      gender,
+      dateOfBirth,
+      maritalStatus,
+      insurance,
+      phone,
+      streetAddress,
+      city,
+      state,
+      zipCode,
+      country,
+      medicalHistory
+    };
+
+    try {
+      const response = await fetch('http://localhost:5073/api/Patient/Register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(patient)
+      });
+
+      const data = await response.json();
+      console.log('Patient registered:', data);
+  
+    }catch (error) {
+      console.error('Error registering patient:', error);
+      alert('Error registering patient!');
+    }
+  };
+
   return (
     <Container>
-      <form className="container">
+      <form className="container" onSubmit={registerPatient}>
         <Typography variant="h4" gutterBottom>Patient Registration Form</Typography>
         <Typography variant="body1" gutterBottom>
-          Thank you for applying to our practice. Please complete this patient registration form with your information, and a doctor will contact you shortly.
+          Thank you for applying to our practice. Please complete this patient registration form with your information.
         </Typography>
         <hr />
 
         <FormRow label="Patient's Name*">
-          <TextField label="First" name="first" required sx={inputStyle} />
-          <TextField label="Last" name="last" required sx={inputStyle} />
+          <TextField label="First" required value={firstName} onChange={(e) => setFirstName(e.target.value)} sx={inputStyle} />
+          <TextField label="Last" required value={lastName} onChange={(e) => setLastName(e.target.value)} sx={inputStyle} />
         </FormRow>
 
         <FormRow label="Gender">
-          <RadioGroup row name="gender">
+          <RadioGroup row value={gender} onChange={(e) => {setGender(e.target.value)}}>
             <FormControlLabel value="male" control={<Radio />} label="Male" />
             <FormControlLabel value="female" control={<Radio />} label="Female" />
           </RadioGroup>
         </FormRow>
 
         <FormRow label="Phone*">
-          <TextField label="### ### ###" name="phone" required sx={inputStyle} />
+          <TextField label="Phone" required value={phone} onChange={(e) => setPhone(e.target.value)} sx={inputStyle} />
         </FormRow>
 
         <FormRow label="Date of Birth*">
-          <TextField type="date" name="dob" required sx={inputStyle} InputLabelProps={{ shrink: true }} />
+          <TextField type="date" required value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} sx={inputStyle} InputLabelProps={{ shrink: true }} />
         </FormRow>
 
         <FormRow label="Marital Status*">
-          <RadioGroup row name="MStatus">
+          <RadioGroup row value={maritalStatus} onChange={(e) => setMaritalStatus(e.target.value)}>
             <FormControlLabel value="Single" control={<Radio />} label="Single" />
             <FormControlLabel value="Married" control={<Radio />} label="Married" />
             <FormControlLabel value="Divorced" control={<Radio />} label="Divorced" />
@@ -76,46 +134,46 @@ function App() {
           </RadioGroup>
         </FormRow>
 
-
         <FormRow label="Address*">
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
-            <TextField label="Street" name="street_address" required fullWidth sx={inputStyle} />
+            <TextField label="Street" required value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} fullWidth sx={inputStyle} />
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <TextField label="City" name="city" required sx={inputStyle} />
-              <TextField label="State" name="state" required sx={inputStyle} />
+              <TextField label="City" required value={city} onChange={(e) => setCity(e.target.value)} sx={inputStyle} />
+              <TextField label="State" required value={state} onChange={(e) => setState(e.target.value)} sx={inputStyle} />
             </Box>
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <TextField label="Postal/Zip Code" name="zip" required sx={inputStyle} />
+              <TextField label="Postal/Zip Code" required value={zipCode} onChange={(e) => setZipCode(e.target.value)} sx={inputStyle} />
               <TextField
                 label="Country"
-                name="country"
                 select
                 required
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
                 sx={inputStyle}
               >
-                <MenuItem value="us">United States</MenuItem>
-                <MenuItem value="ca">Canada</MenuItem>
-                <MenuItem value="uk">United Kingdom</MenuItem>
-                <MenuItem value="au">Australia</MenuItem>
-                <MenuItem value="in">India</MenuItem>
-                <MenuItem value="de">Germany</MenuItem>
-                <MenuItem value="fr">France</MenuItem>
-                <MenuItem value="jp">Japan</MenuItem>
-                <MenuItem value="cn">China</MenuItem>
+                {['us', 'ca', 'uk', 'au', 'in', 'de', 'fr', 'jp', 'cn'].map((code) => (
+                  <MenuItem key={code} value={code}>{code.toUpperCase()}</MenuItem>
+                ))}
               </TextField>
             </Box>
           </Box>
         </FormRow>
 
         <FormRow label="Insurance Name*">
-          <TextField name="insurance_name" required sx={inputStyle} />
+          <TextField required value={insurance} onChange={(e) => setInsurance(e.target.value)} sx={inputStyle} />
         </FormRow>
 
         <Box sx={{ display: 'flex', mb: 2, gap: 2 }}>
           <FormLabel sx={labelStyle}>Past Medical History*</FormLabel>
           <FormGroup sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             {['Anemia', 'Asthma', 'Bronchitis', 'Chickenpox', 'Diabetes', 'Pneumonia', 'Thyroid Disease', 'Ulcer', 'Other'].map(item => (
-              <FormControlLabel control={<Checkbox />} label={item} key={item} />
+              <FormControlLabel
+                key={item}
+                control={
+                  <Checkbox value={item} checked={medicalHistory.includes(item)} onChange={handleMedicalHistoryChange} />
+                }
+                label={item}
+              />
             ))}
           </FormGroup>
         </Box>
@@ -124,8 +182,8 @@ function App() {
         <Typography variant="body1" gutterBottom>
           According to our privacy policy and federal law, your information within this patient registration form will remain private at all times.
         </Typography>
-
-        <Button type="submit" variant="contained" fullWidth sx={submitButtonStyle}>
+{}
+        <Button type="submit" onClick={registerPatient} variant="contained" fullWidth sx={submitButtonStyle}>
           REGISTER
         </Button>
       </form>
