@@ -79,7 +79,7 @@ function App() {
     };
 
     try {
-      const response = await fetch('http://localhost:5073/api/Patient/Register', {
+      const response = await fetch('http://mc-patient-registration-service.azurewebsites.net/api/Patient/Register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
