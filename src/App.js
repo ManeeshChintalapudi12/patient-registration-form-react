@@ -51,6 +51,9 @@ function App() {
   const [zipCode, setZipCode] = useState('');
   const [country, setCountry] = useState('');
   const [medicalHistory, setMedicalHistory] = useState([]);
+  // Submission outcome shown inline after the form posts, so the user
+  // gets confirmation (or a readable error) instead of only a console log.
+  const [status, setStatus] = useState(null);
 
   const handleMedicalHistoryChange = (event) => {
     const value = event.target.value;
@@ -61,6 +64,7 @@ function App() {
 
   const registerPatient = async (e) => {
     e.preventDefault();
+    setStatus(null);
 
     const patient = {
       firstName,
@@ -87,12 +91,16 @@ function App() {
         body: JSON.stringify(patient)
       });
 
+      if (!response.ok) {
+        throw new Error(`Registration failed with status ${response.status}`);
+      }
+
       const data = await response.json();
       console.log('Patient registered:', data);
-  
-    }catch (error) {
+      setStatus({ type: 'success', message: 'Patient registered successfully.' });
+    } catch (error) {
       console.error('Error registering patient:', error);
-      alert('Error registering patient!');
+      setStatus({ type: 'error', message: 'Error registering patient. Please try again.' });
     }
   };
 
@@ -183,9 +191,19 @@ function App() {
           According to our privacy policy and federal law, your information within this patient registration form will remain private at all times.
         </Typography>
 {}
-        <Button type="submit" onClick={registerPatient} variant="contained" fullWidth sx={submitButtonStyle}>
+        <Button type="submit" variant="contained" fullWidth sx={submitButtonStyle}>
           REGISTER
         </Button>
+
+        {status && (
+          <Typography
+            role="status"
+            variant="body1"
+            sx={{ mt: 2, color: status.type === 'success' ? 'green' : 'red' }}
+          >
+            {status.message}
+          </Typography>
+        )}
       </form>
     </Container>
   );
